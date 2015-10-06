@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="action_bar_background">#000000</color>
+    <color name="app_background">#1c1c1c</color>
+
+    <color name="battery_text">#4d2b7c</color>
+    <color name="battery_background">#330e30</color>
+    <color name="battery_circle_discharging">#e161e5</color>
+    <color name="battery_circle_discharging_background">#481c6b</color>
+    <color name="battery_circle_critical">#ef2074</color>
+    <color name="battery_circle_critical_background">#7f1838</color>
+    <color name="battery_circle_charging">#e7e6e8</color>
+    <color name="battery_circle_charging_background">#481c6b</color>
+
+    <color name="wifi_background">#0c272b</color>
+    <color name="wifi_triangle_background">#005e53</color>
+    <color name="wifi_triangle_foreground">#25ceb6</color>
+    <color name="wifi_triangle_critical">#005e53</color>
+
+    <color name="cellular_background">#0c272b</color>
+    <color name="cellular_triangle_background">#005e53</color>
+    <color name="cellular_triangle_foreground">#ff9d00</color>
+    <color name="cellular_triangle_critical">#f25f51</color>
+
+    <color name="notifications_background">#071934</color>
+    <color name="notifications_color_0">#20326b</color>
+    <color name="notifications_color_1">#1f8fc1</color>
+    <color name="notifications_color_2">#8bc9d8</color>
+    <color name="notifications_color_3">#bbdadd</color>
+</resources>

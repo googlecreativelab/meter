@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/action_bar_background"
+              android:id="@+id/splashScreenLayout">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/meter_logo"
+        android:id="@+id/imageView" android:layout_gravity="center"
+        android:layout_marginLeft="40dp" android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/an_android_experiment"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/imageView2" android:layout_gravity="center_horizontal|bottom"/>
+</FrameLayout>

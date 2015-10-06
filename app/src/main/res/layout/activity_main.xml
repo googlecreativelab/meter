@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@color/app_background"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/battery_circle_charging"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/wallpaper_description"
+        android:textSize="14dp"
+        android:lineSpacingMultiplier="1.2"
+        android:gravity="left"
+        android:id="@+id/descriptionTextView" android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp" android:layout_marginBottom="10dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/lowerFrameLayout"
+        android:layout_below="@+id/descriptionTextView">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:src="@drawable/menu_wifi_icon"
+            android:id="@+id/imageView3" android:layout_gravity="left|top"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/menu_battery_icon"
+            android:id="@+id/batteryIcon" android:layout_gravity="left|center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="110dp"
+            android:textSize="14dp"
+            android:textColor="@color/battery_circle_charging"
+            android:text="Battery"
+            android:layout_gravity="left|center" android:layout_marginBottom="30dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:src="@drawable/menu_notifications_icon"
+            android:id="@+id/notificationsIcon" android:layout_gravity="left|bottom"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="14dp"
+            android:textColor="@color/battery_circle_charging"
+            android:text="Notifications"
+            android:layout_gravity="left|bottom"
+            android:layout_marginLeft="110dp"
+            android:layout_marginBottom="30dp"/>
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="38dp"
+            android:layout_margin="20dp"
+            android:text="@string/give_access"
+            android:textColor="@color/wifi_triangle_foreground"
+            android:textSize="14dp"
+            android:textAllCaps="true"
+            android:background="@drawable/menu_button_border"
+            android:id="@+id/notificationsEnableButton"
+            android:layout_gravity="right|bottom"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="110dp"
+            android:textSize="14dp"
+            android:textColor="@color/battery_circle_charging"
+            android:text="WiFi + Cellular"
+            android:layout_gravity="left|top"/>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/lowerFrameLayout"
+        android:layout_width="match_parent"
+        android:background="@color/app_background"
+        android:layout_height="90dp" android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/wifi_triangle_foreground"
+            android:textColor="@color/action_bar_background"
+            android:text="SET WALLPAPER"
+            android:textSize="21dp"
+            android:id="@+id/choseWallpaperButton" android:layout_gravity="center"/>
+    </FrameLayout>
+</RelativeLayout>

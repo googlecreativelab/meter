@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Meter</string>
+    <string name="wallpaper_description">Meter is a data-driven wallpaper that displays the battery, wireless signal and notifications in a simple background visualization. It cycles through three visualizations and you can play with each wallpaper by tilting and moving the phone.</string>
+    <string name="notification_permission">Please give Meter permission to listen for notifications."</string>
+    <string name="title_activity_main">Meter</string>
+    <string name="action_licenses">Licenses</string>
+    <string name="action_about">About</string>
+    <string name="give_access">Give Access</string>
+    <string name="revoke_access">Revoke Access</string>
+</resources>
