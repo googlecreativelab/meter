@@ -161,7 +161,7 @@ public class NotificationsDrawer extends Drawer {
 
         _weight += (mOrientation[1] - _weight) * 0.1f;
 
-        float barHeight = getRectHeights(squareSize, (float)_num, _weight); //(float) (squareSize/_num);
+        float barHeight = getRectHeights(squareSize, (float)_num, _weight);
 
         int notificationLength = (int)Math.ceil(_numNotifications);
 
@@ -189,26 +189,9 @@ public class NotificationsDrawer extends Drawer {
             c.drawRect(x - squareSize / 2, top, x + squareSize / 2, bottom, p);
         }
 
-/*        for(int i=0;i<notificationLength;i++){
-            p.setColor(getColor(i,_numNotifications));
-
-            float top = barHeight*(i+1);
-            float bottom = barHeight*i;
-            if(top > squareSize) top = squareSize;
-
-            if( Math.signum(mOrientation[1]) > 0 && i == 0 ){
-
-            }
-
-            c.drawRect(x - squareSize / 2, yStart - top, x + squareSize / 2, yStart - bottom, p);
-        }*/
-
-/*        p.setColor(Color.WHITE);
-        p.setTextSize(47);
-        c.drawText(Float.toString(Math.round(mOrientation[1] * 100) / 100.0f), 500, 1000, p);*/
-
         // Text
-        String text1 = Integer.toString(Math.round(numNotifications)) + " Notifications";
+        int num = Math.round(numNotifications);
+        String text1 = Integer.toString(num) +  (num == 1 ? "Notification" : " Notifications");
         String text2 = "";
 
         if(!NotificationService.permissionsGranted) {
