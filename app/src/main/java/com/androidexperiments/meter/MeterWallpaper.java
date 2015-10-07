@@ -1,10 +1,13 @@
 package com.androidexperiments.meter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.util.ArrayList;
@@ -13,6 +16,8 @@ import com.androidexperiments.meter.drawers.BatteryDrawer;
 import com.androidexperiments.meter.drawers.CombinedWifiCellularDrawer;
 import com.androidexperiments.meter.drawers.Drawer;
 import com.androidexperiments.meter.drawers.NotificationsDrawer;
+
+import com.actionlauncher.api.LiveWallpaperSource;
 
 /**
  * The Live Wallpaper Service and rendering Engine
@@ -25,6 +30,10 @@ public class MeterWallpaper extends WallpaperService {
 
     // Variable containing the index of the drawer last shown
     private int mDrawerIndex = -1;
+
+    // Whether we have to update actionlauncher with a new wallpaper
+    // ONLY set to true if actionlauncher was updated SUCCESSFULLY
+    private boolean mUpdateActionLauncher;
 
     @Override
     public Engine onCreateEngine() {
@@ -81,12 +90,28 @@ public class MeterWallpaper extends WallpaperService {
             if(mDrawer.shouldDraw()) {
                 SurfaceHolder holder = getSurfaceHolder();
                 Canvas c = null;
+                Bitmap bmp = null;
+                // Draw into a Bitmap which will then be sent to ActionLauncher
+                if (mUpdateActionLauncher) {
+                    Rect surfaceFrame = holder.getSurfaceFrame();
+                    bmp = Bitmap.createBitmap(surfaceFrame.width(), surfaceFrame.height(), Bitmap.Config.ARGB_8888);
+                    c = new Canvas(bmp);
+                    if (c != null) {
+                        // Let the drawer render to the canvas
+                        mDrawer.draw(c);
+                    }
+                    updateActionLauncher(bmp);
+                }
                 try {
                     // Lock the drawing canvas
                     c = holder.lockCanvas();
                     if (c != null) {
-                        // Let the drawer render to the canvas
-                        mDrawer.draw(c);
+                        if (bmp != null) {
+                            c.drawBitmap(bmp, 0, 0, null);
+                        } else {
+                            // Let the drawer render to the canvas
+                            mDrawer.draw(c);
+                        }
                     }
                 } finally {
                     if (c != null) holder.unlockCanvasAndPost(c);
@@ -99,6 +124,28 @@ public class MeterWallpaper extends WallpaperService {
             }
         }
 
+        // Taken from the ActionLauncher API Documentation
+        private void updateActionLauncher(Bitmap bmp) {
+            if (bmp != null) {
+                try {
+                    LiveWallpaperSource.with(mContext)
+                            .setBitmapSynchronous(bmp)
+                            .run();
+                    mUpdateActionLauncher = false;
+                } catch (OutOfMemoryError outOfMemoryError) {
+                    // Palette generation was unable to process the Bitmap passed in to
+                    // setBitmapSynchronous(). Consider using a smaller image.
+                    // See ActionPalette.DEFAULT_RESIZE_BITMAP_MAX_DIMENSION
+                    Log.e(TAG, "Error setting ActionLauncher LiveWallpaper", outOfMemoryError);
+                } catch (IllegalArgumentException illegalArgumentEx) {
+                    // Raised during palette generation. Check your Bitmap.
+                    Log.e(TAG, "Error setting ActionLauncher LiveWallpaper", illegalArgumentEx);
+                } catch (IllegalStateException illegalStateException) {
+                    // Raised during palette generation. Check your Bitmap.
+                   Log.e(TAG, "Error setting ActionLauncher LiveWallpaper", illegalStateException);
+                }
+            }
+        }
 
         /**
          * Toggle visibility of the wallpaper
@@ -135,7 +182,9 @@ public class MeterWallpaper extends WallpaperService {
                 }
 
                 mDrawer.start();
-                // Start the drawing loop
+
+                // Start the drawing loop and make sure ActionLauncher will get updated
+                mUpdateActionLauncher = true;
                 draw();
 
             } else {
@@ -149,6 +198,7 @@ public class MeterWallpaper extends WallpaperService {
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            mUpdateActionLauncher = true;
             draw();
         }
 
