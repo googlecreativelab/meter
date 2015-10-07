@@ -11,7 +11,7 @@ Meter comes with an application to enable a [NotificationListenerService](https:
 
 &nbsp;
 
-Report any issues [here](https://github.com/googlecreativelab/tunnelvision/issues) - we love pull requests!
+Report any issues [here](https://github.com/googlecreativelab/meter/issues) - we love pull requests!
 
 ## License
 
