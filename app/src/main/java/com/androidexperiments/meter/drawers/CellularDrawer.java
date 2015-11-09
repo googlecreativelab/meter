@@ -27,7 +27,7 @@ import com.androidexperiments.meter.R;
  */
 public class CellularDrawer extends TriangleFillDrawer {
     private final String TAG = this.getClass().getSimpleName();
-
+    private static final boolean DEBUG = false;
 
     private boolean firstRead = true;
 
@@ -56,7 +56,9 @@ public class CellularDrawer extends TriangleFillDrawer {
             @Override
             public void onSignalStrengthsChanged(SignalStrength signalStrength) {
                 super.onSignalStrengthsChanged(signalStrength);
-                Log.d(TAG, "SIGNAL "+String.valueOf(signalStrength));
+                if (DEBUG) {
+                    Log.d(TAG, "SIGNAL "+String.valueOf(signalStrength));
+                }
 
                 int level = 0;
                 String tech = "";
@@ -117,14 +119,18 @@ public class CellularDrawer extends TriangleFillDrawer {
                     _percent = (float) (percent-0.001);
                 }
 
-                Log.d(TAG, tech+" "+String.valueOf(level));
+                if (DEBUG) {
+                    Log.d(TAG, tech+" "+String.valueOf(level));
+                }
             }
 
             @Override
             public void onServiceStateChanged(ServiceState serviceState) {
                 super.onServiceStateChanged(serviceState);
                 setLabel2();
-                Log.d(TAG,"STATE "+String.valueOf(serviceState)+"   "+serviceState.getState());
+                if (DEBUG) {
+                    Log.d(TAG,"STATE "+String.valueOf(serviceState)+"   "+serviceState.getState());
+                }
             }
         },PhoneStateListener.LISTEN_SIGNAL_STRENGTHS | PhoneStateListener.LISTEN_SERVICE_STATE);
 
