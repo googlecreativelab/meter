@@ -180,7 +180,7 @@ public class BatteryDrawer extends Drawer {
         int fgCircleColor = interpolateColor(color_foreground_decharge, color_foreground_charging, (float) lerp(_colorTransitionToCharged));
         fgCircleColor = interpolateColor(fgCircleColor, color_foreground_critical, (float) lerp(_colorTransitionToCritical));
         paint.setColor(fgCircleColor);
-        c.drawCircle((float)(x+c.getWidth()*pos.getX()),(float)(y+c.getWidth()*pos.getY()), _circleSize*batteryPct, paint);
+        c.drawCircle((float)(x+c.getWidth()*pos.getX()),(float)(y+c.getWidth()*pos.getY()), (float) Math.sqrt(_circleSize*_circleSize*batteryPct), paint);
 
         // Text
         String label1 = "Battery " + Integer.toString(Math.round(batteryPct*100)) + "%";
