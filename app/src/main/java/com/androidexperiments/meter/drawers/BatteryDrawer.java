@@ -118,7 +118,7 @@ public class BatteryDrawer extends Drawer {
         pos = pos.add(vel);
 
         float dist = (float) pos.distance(new Vector2D(0,0));
-        float maxDist = (float) (circleSize-circleSize*batteryPct);
+        float maxDist = (float) (circleSize-innerCircleRadius(circleSize, batteryPct));
         if(dist > maxDist){
             Vector2D n = pos.normalize().scalarMultiply(-1);
             Vector2D reflection = vel.subtract(n.scalarMultiply(2*vel.dotProduct(n)));
@@ -180,7 +180,7 @@ public class BatteryDrawer extends Drawer {
         int fgCircleColor = interpolateColor(color_foreground_decharge, color_foreground_charging, (float) lerp(_colorTransitionToCharged));
         fgCircleColor = interpolateColor(fgCircleColor, color_foreground_critical, (float) lerp(_colorTransitionToCritical));
         paint.setColor(fgCircleColor);
-        c.drawCircle((float)(x+c.getWidth()*pos.getX()),(float)(y+c.getWidth()*pos.getY()), _circleSize*batteryPct, paint);
+        c.drawCircle((float)(x+c.getWidth()*pos.getX()),(float)(y+c.getWidth()*pos.getY()), (float)innerCircleRadius(_circleSize, batteryPct), paint);
 
         // Text
         String label1 = "Battery " + Integer.toString(Math.round(batteryPct*100)) + "%";
@@ -204,5 +204,13 @@ public class BatteryDrawer extends Drawer {
         int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         return status == BatteryManager.BATTERY_STATUS_CHARGING ||
                 status == BatteryManager.BATTERY_STATUS_FULL;
+    }
+
+    /**
+     * Calculate the inner circle radius so that its area is batteryPct times
+     * that of the outer circle.
+     */
+    private static double innerCircleRadius(double outerCircleRadius, float batteryPct) {
+        return outerCircleRadius*Math.sqrt(batteryPct);
     }
 }
