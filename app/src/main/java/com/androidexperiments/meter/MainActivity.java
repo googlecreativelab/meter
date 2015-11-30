@@ -2,6 +2,7 @@ package com.androidexperiments.meter;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -53,7 +54,9 @@ public class MainActivity extends Activity {
         mSetWallpaperBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER);
+                Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+                intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
+                        new ComponentName(getApplication(), MeterWallpaper.class));
                 startActivity(intent);
             }
         });
