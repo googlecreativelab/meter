@@ -1,5 +1,5 @@
 # Meter
-[![axp](https://www.androidexperiments.com/assets/img/axpbadge.svg)](https://www.androidexperiments.com/experiment/meter)
+[![axp](https://experiments.withgoogle.com/assets/img/axpbadge.svg)](https://www.androidexperiments.com/experiment/meter)
 
 Meter is a data-driven wallpaper that displays the battery, wireless signal and notifications in a simple background visualization. It cycles through three visualizations and you can play with each wallpaper by tilting and moving the phone.
 
