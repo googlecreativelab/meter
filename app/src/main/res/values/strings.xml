@@ -7,4 +7,5 @@
     <string name="action_about">About</string>
     <string name="give_access">Give Access</string>
     <string name="revoke_access">Revoke Access</string>
+    <string name="enable_notification_listener">Enable notification listener</string>
 </resources>

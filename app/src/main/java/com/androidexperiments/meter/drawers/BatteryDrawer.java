@@ -1,3 +1,17 @@
+// Copyright 2017 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.androidexperiments.meter.drawers;
 
 import android.content.BroadcastReceiver;
@@ -24,7 +38,9 @@ public class BatteryDrawer extends Drawer {
     private double colorTransitionToCritical = 0;
     private double _colorTransitionToCritical = 0;
 
-    double circleSize = 0.7*0.5;
+    private final Vector2D zero = new Vector2D(0,0);
+
+    private final double circleSize = 0.7*0.5;
 
     // Colors
     private final int color_battery_background;
@@ -40,8 +56,8 @@ public class BatteryDrawer extends Drawer {
     private Paint paint = new Paint();
 
     // Movement
-    Vector2D pos, _pos;
-    Vector2D vel;
+    private Vector2D pos, _pos;
+    private Vector2D vel;
 
     public BatteryDrawer(Context context){
         super(context);
@@ -117,8 +133,9 @@ public class BatteryDrawer extends Drawer {
         vel = vel.add(a);
         pos = pos.add(vel);
 
-        float dist = (float) pos.distance(new Vector2D(0,0));
-        float maxDist = (float) (circleSize-circleSize*batteryPct);
+
+        float dist = (float) pos.distance(zero);
+        float maxDist = (float) (circleSize-circleSize*Math.sqrt(batteryPct));
         if(dist > maxDist){
             Vector2D n = pos.normalize().scalarMultiply(-1);
             Vector2D reflection = vel.subtract(n.scalarMultiply(2*vel.dotProduct(n)));
@@ -168,7 +185,13 @@ public class BatteryDrawer extends Drawer {
 
         int x = c.getWidth()/2;
         int y = c.getHeight()/2 - (int)(30f*pixelDensity);
-        float _circleSize = (float) (c.getWidth()*circleSize);
+
+        int canvasSize = c.getWidth();
+        if(c.getWidth() > c.getHeight()) {
+            canvasSize = c.getHeight();
+        }
+        float _circleSize = (float) (canvasSize*circleSize);
+        int textPos = (int) (y+circleSize*canvasSize);
 
         // Outer circle
         int bgCircleColor = interpolateColor(color_background_decharge, color_background_charging, (float) lerp(_colorTransitionToCharged));
@@ -180,11 +203,14 @@ public class BatteryDrawer extends Drawer {
         int fgCircleColor = interpolateColor(color_foreground_decharge, color_foreground_charging, (float) lerp(_colorTransitionToCharged));
         fgCircleColor = interpolateColor(fgCircleColor, color_foreground_critical, (float) lerp(_colorTransitionToCritical));
         paint.setColor(fgCircleColor);
-        c.drawCircle((float)(x+c.getWidth()*pos.getX()),(float)(y+c.getWidth()*pos.getY()), _circleSize*batteryPct, paint);
+        c.drawCircle(
+                (float)(x+canvasSize*pos.getX()),
+                (float)(y+canvasSize*pos.getY()),
+                (float) (_circleSize * Math.sqrt(batteryPct)), paint);
 
         // Text
         String label1 = "Battery " + Integer.toString(Math.round(batteryPct*100)) + "%";
-        drawText(label1, "", x, (int) (y+circleSize*c.getWidth()), c);
+        drawText(label1, "", x, textPos, c);
     }
 
 

@@ -1,7 +1,22 @@
+// Copyright 2017 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.androidexperiments.meter.drawers;
 
 
 import android.animation.ArgbEvaluator;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,14 +26,21 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import android.service.wallpaper.WallpaperService;
+import android.view.Display;
+import android.view.Surface;
+import android.view.WindowManager;
+
 import java.util.Calendar;
 
 import com.androidexperiments.meter.fonts.RobotoLightTypeface;
+
 
 /**
  * Class inherited by the other drawers
  */
 public class Drawer implements SensorEventListener {
+    private Display mDisplay;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private Sensor mMagnetometer;
@@ -78,13 +100,13 @@ public class Drawer implements SensorEventListener {
     public void draw(Canvas c){
 
 
-    };
+    }
 
     public boolean shouldDraw(){
         boolean draw = false;
 
         return draw;
-    };
+    }
 
 
 
@@ -180,9 +202,30 @@ public class Drawer implements SensorEventListener {
         }
         if (mLastAccelerometerSet && mLastMagnetometerSet) {
             SensorManager.getRotationMatrix(mR, null, mLastAccelerometer, mLastMagnetometer);
-            SensorManager.getOrientation(mR, mOrientation);
-            /*Log.i("OrientationTestActivity", String.format("Orientation: %f, %f, %f",
-                    mOrientation[0], mOrientation[1], mOrientation[2]));*/
+
+            try {
+                mDisplay = ((WindowManager) ((WallpaperService) context).getApplication().getSystemService(Service.WINDOW_SERVICE))
+                        .getDefaultDisplay();
+            } catch (Exception ignored){}
+
+
+            int rotation = Surface.ROTATION_0;
+            if(mDisplay != null) {
+                rotation = mDisplay.getRotation();
+            }
+
+            float[] mRremap = mR.clone();
+            if(rotation == Surface.ROTATION_90){
+                SensorManager.remapCoordinateSystem(mR, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, mRremap);
+            }
+            if(rotation == Surface.ROTATION_270){
+                SensorManager.remapCoordinateSystem(mR, SensorManager.AXIS_MINUS_Y, SensorManager.AXIS_X, mRremap);
+            }
+            if(rotation == Surface.ROTATION_180){
+                SensorManager.remapCoordinateSystem(mR, SensorManager.AXIS_MINUS_X, SensorManager.AXIS_MINUS_Y, mRremap);
+            }
+
+            SensorManager.getOrientation(mRremap, mOrientation);
         }
     }
 

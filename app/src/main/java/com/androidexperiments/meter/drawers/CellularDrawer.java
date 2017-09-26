@@ -1,3 +1,17 @@
+// Copyright 2017 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.androidexperiments.meter.drawers;
 
 import android.app.Service;
@@ -27,7 +41,7 @@ import com.androidexperiments.meter.R;
  */
 public class CellularDrawer extends TriangleFillDrawer {
     private final String TAG = this.getClass().getSimpleName();
-    private static final boolean DEBUG = false;
+
 
     private boolean firstRead = true;
 
@@ -56,9 +70,6 @@ public class CellularDrawer extends TriangleFillDrawer {
             @Override
             public void onSignalStrengthsChanged(SignalStrength signalStrength) {
                 super.onSignalStrengthsChanged(signalStrength);
-                if (DEBUG) {
-                    Log.d(TAG, "SIGNAL "+String.valueOf(signalStrength));
-                }
 
                 int level = 0;
                 String tech = "";
@@ -71,7 +82,14 @@ public class CellularDrawer extends TriangleFillDrawer {
                     return;
                 }
 
-                List<CellInfo> infos = tManager.getAllCellInfo();
+                List<CellInfo> infos = null;
+
+                try {
+                    infos = tManager.getAllCellInfo();
+                } catch (SecurityException e){
+                    Log.e(TAG, e.toString());
+                }
+
                 if( infos == null ){
                     connected = false;
                     return;
@@ -116,11 +134,7 @@ public class CellularDrawer extends TriangleFillDrawer {
 
                 if (firstRead) {
                     firstRead = false;
-                    _percent = (float) (percent-0.001);
-                }
-
-                if (DEBUG) {
-                    Log.d(TAG, tech+" "+String.valueOf(level));
+                    _percent = (float) (percent - 0.001);
                 }
             }
 
@@ -128,9 +142,7 @@ public class CellularDrawer extends TriangleFillDrawer {
             public void onServiceStateChanged(ServiceState serviceState) {
                 super.onServiceStateChanged(serviceState);
                 setLabel2();
-                if (DEBUG) {
-                    Log.d(TAG,"STATE "+String.valueOf(serviceState)+"   "+serviceState.getState());
-                }
+                Log.d(TAG,"STATE "+String.valueOf(serviceState)+"   "+serviceState.getState());
             }
         },PhoneStateListener.LISTEN_SIGNAL_STRENGTHS | PhoneStateListener.LISTEN_SERVICE_STATE);
 

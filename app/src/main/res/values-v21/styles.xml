@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light">
+    <style name="AppTheme" parent="android:Theme.Material">
+    </style>
+
+    <style name="CustomActionBarTheme" parent="android:Theme.Material" />
+
+    <style name="MyActionBar"
+        parent="@android:style/Widget.Material.ActionBar.Solid">
     </style>
 </resources>

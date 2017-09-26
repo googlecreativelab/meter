@@ -1,6 +1,21 @@
+// Copyright 2017 Google Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.androidexperiments.meter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +40,7 @@ public class MeterWallpaper extends WallpaperService {
 
     // Variable containing the index of the drawer last shown
     private int mDrawerIndex = -1;
+    private long mHideTimestamp = -1;
 
     @Override
     public Engine onCreateEngine() {
@@ -111,19 +127,25 @@ public class MeterWallpaper extends WallpaperService {
             mVisible = visible;
             if (visible) {
 
+                SharedPreferences prefs = getSharedPreferences(WallpaperPreferences.PREFERENCES, MODE_PRIVATE);
+
                 ArrayList<Class> drawerClasses = new ArrayList<Class>();
 
-                //always include wifi + battery
-                drawerClasses.add(CombinedWifiCellularDrawer.class);
-                drawerClasses.add(BatteryDrawer.class);
-                //only include notifications if it has permission
-                if(NotificationService.permissionsGranted){
+                if(prefs.getBoolean(WallpaperPreferences.WIFI_CELLULAR, true)) {
+                    drawerClasses.add(CombinedWifiCellularDrawer.class);
+                }
+                if(prefs.getBoolean(WallpaperPreferences.BATTERY, true)) {
+                    drawerClasses.add(BatteryDrawer.class);
+                }
+                if( prefs.getBoolean(WallpaperPreferences.NOTIFICATIONS, true)) {
                     drawerClasses.add(NotificationsDrawer.class);
                 }
 
-                mDrawerIndex++;
-                if( mDrawerIndex >= drawerClasses.size() ){
-                    mDrawerIndex = 0;
+                if(System.currentTimeMillis() - mHideTimestamp > 500 || mHideTimestamp == -1) {
+                    mDrawerIndex++;
+                    if (mDrawerIndex >= drawerClasses.size()) {
+                        mDrawerIndex = 0;
+                    }
                 }
                 Class cls = drawerClasses.get(mDrawerIndex);
                 if(cls == NotificationsDrawer.class) {
@@ -139,6 +161,7 @@ public class MeterWallpaper extends WallpaperService {
                 draw();
 
             } else {
+                mHideTimestamp = System.currentTimeMillis();
                 if( mDrawer != null ) {
                     mDrawer.destroy();
                     mDrawer = null;

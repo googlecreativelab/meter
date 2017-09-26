@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "com.androidexperiments.meter"
         minSdkVersion 18
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 25
+        versionCode 6
+        versionName "1.1.1"
     }
     buildTypes {
         release {
@@ -25,4 +25,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.apache.commons:commons-math3:3.5'
+    compile 'com.android.support:support-v4:25.3.1'
 }
