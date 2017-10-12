@@ -7,4 +7,6 @@ Meter comes with an application to enable a [NotificationListenerService](https:
 
 Report any issues [here](https://github.com/googlecreativelab/meter/issues)
 
+This is not an official Google product, but an [Android Experiment](experiments.withgoogle.com/android).
+
 [<img alt="Get it on Google Play" height="45px" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" />](https://play.google.com/store/apps/details?id=com.androidexperiments.meter)
